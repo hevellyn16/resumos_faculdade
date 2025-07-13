@@ -317,6 +317,7 @@ export default function Home() {
                     border-radius: 0.5rem;
                     margin-top: 1rem;
                     margin-bottom: 1rem;
+                    overflow-x: auto; 
                 }
                 .details-summary-btn {
                     display: inline-block;
