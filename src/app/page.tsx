@@ -56,7 +56,7 @@ export default function Home() {
                 switch (theoremType) {
     case 'green':
 
-        prompt = 'Gere um exemplo simples e conciso de aplicação do Teorema de Green, explicando os passos de forma didática. Utilize a sintaxe LaTeX correta e padrão para todas as expressões matemáticas, usando $ para inline e $$ para display. Utilize Markdown para títulos, negritos e listas. Garanta espaçamento adequado entre as palavras e uma formatação visualmente clara.';
+        prompt = 'Gere um exemplo simples e conciso de aplicação do Teorema de Green, explicando os passos de forma didática. faça o exemplo podendo ser tanto sobre a Forma de Circulação ou sobre a Forma de Fluxo. Utilize a sintaxe LaTeX correta e padrão para todas as expressões matemáticas, usando $ para inline e $$ para display. Utilize Markdown para títulos, negritos e listas. Garanta espaçamento adequado entre as palavras e uma formatação visualmente clara.';
         break;
     case 'stokes':
        prompt = 'Gere um exemplo simples e conciso de aplicação do Teorema de Stokes, explicando os passos de forma didática. Utilize a sintaxe LaTeX correta (usando \\vec{F} ou \\mathbf{F} para vetores) para todas as expressões matemáticas, usando $ para inline e $$ para display. **Para o cálculo do Rotacional (Curl), utilize o ambiente LaTeX \\begin{vmatrix} e \\end{vmatrix} para criar a matriz determinante, garantindo alinhamento e formatação visualmente clara.** Utilize Markdown para títulos, negritos e listas. **Gere texto claro e em português correto, sem concatenar palavras ou usar formatação estranha em termos.** ';
