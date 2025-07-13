@@ -1,11 +1,10 @@
-// app/page.tsx
-'use client'; // Necessário para usar recursos do lado do cliente como useEffect e useState
+
+'use client'; 
 
 import { useEffect } from 'react';
-import Script from 'next/script'; // Para carregar bibliotecas externas (MathJax, Marked)
-import { marked } from 'marked'; // Se você instalou 'marked' via npm install marked
-// Se você não instalou 'marked', você pode usar a versão carregada pelo Script, 
-// mas é mais robusto usar a versão instalada.
+import Script from 'next/script'; 
+import { marked } from 'marked'; 
+
 
 declare global {
   // Define o tipo para a variável global MathJax, para o TypeScript não reclamar.
@@ -19,13 +18,13 @@ declare global {
 export default function Home() {
 
     useEffect(() => {
-        // Esta lógica JavaScript agora roda no lado do cliente (navegador).
+        
         
         // Inicialização do MathJax após a montagem do componente
         const initializeMathJax = () => {
             if (window.MathJax) {
                 console.log("MathJax carregado e pronto para renderizar!");
-                // Usa typesetPromise para renderizar equações LaTeX no carregamento da página
+              
                 window.MathJax.typesetPromise(); 
             } else {
                 console.log("MathJax não foi carregado.");
@@ -48,36 +47,35 @@ export default function Home() {
                 const llmResponseDiv = parentSection.querySelector('.llm-response') as HTMLElement;
                 const loadingIndicator = parentSection.querySelector('.loading-indicator') as HTMLElement;
 
-                // Show loading, hide previous response
+                
                 llmResponseDiv.classList.add('hidden');
                 loadingIndicator.classList.remove('hidden');
-                llmResponseDiv.innerHTML = ''; // Clear previous content
+                llmResponseDiv.innerHTML = ''; 
 
                 let prompt = '';
                 switch (theoremType) {
     case 'green':
-        // Prompt para o Teorema de Green: Foco em LaTeX e formatação didática.
+
         prompt = 'Gere um exemplo simples e conciso de aplicação do Teorema de Green, explicando os passos de forma didática. Utilize a sintaxe LaTeX correta e padrão para todas as expressões matemáticas, usando $ para inline e $$ para display. Utilize Markdown para títulos, negritos e listas. Garanta espaçamento adequado entre as palavras e uma formatação visualmente clara.';
         break;
     case 'stokes':
        prompt = 'Gere um exemplo simples e conciso de aplicação do Teorema de Stokes, explicando os passos de forma didática. Utilize a sintaxe LaTeX correta (usando \\vec{F} ou \\mathbf{F} para vetores) para todas as expressões matemáticas, usando $ para inline e $$ para display. **Para o cálculo do Rotacional (Curl), utilize o ambiente LaTeX \\begin{vmatrix} e \\end{vmatrix} para criar a matriz determinante, garantindo alinhamento e formatação visualmente clara.** Utilize Markdown para títulos, negritos e listas. **Gere texto claro e em português correto, sem concatenar palavras ou usar formatação estranha em termos.** ';
     break;
     case 'gauss':
-        // Prompt para o Teorema de Gauss (já atualizado para espaçamento e itálicos):
+        
         prompt = 'Gere um exemplo simples e conciso de aplicação do Teorema de Gauss (Teorema da Divergência), explicando os passos de forma didática. Utilize a sintaxe LaTeX correta e padrão para todas as expressões matemáticas, usando $ para inline e $$ para display. Utilize Markdown para títulos, negritos e listas. Garanta espaçamento adequado entre as palavras e evite formatar termos técnicos em itálico.';
         break;
     case 'default':
-        // Prompt padrão: Foco em sintaxe LaTeX correta e formatação clara.
+  
         prompt = 'Gere um exemplo de um teorema de cálculo vetorial. Utilize a sintaxe LaTeX correta e padrão para as expressões matemáticas, usando $ para inline e $$ para display. Utilize Markdown para títulos, negritos e listas. Garanta espaçamento adequado entre as palavras e uma formatação visualmente clara.';
         break;
 }
                 try {
-                    // CHAMA SUA API ROUTE INTERNA NA VERCEL
-                    // O Next.js roteará essa chamada para o seu arquivo api/generate/route.ts
+                    
                     const response = await fetch('/api/generate', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ prompt: prompt }) // Envia o prompt para o servidor
+                        body: JSON.stringify({ prompt: prompt }) 
                     });
 
                     if (!response.ok) {
@@ -87,26 +85,25 @@ export default function Home() {
                     } else {
                         const result = await response.json();
 
-                        // O resultado da sua API Route (api/generate/route.ts) deve conter o texto gerado.
-                        // Assumindo que a resposta JSON seja o texto em Markdown
+                        
                         const markdownText = result.text; 
 
                         if (markdownText) {
-                            // Converte Markdown para HTML
+                            
                             const htmlContent = await marked.parse(markdownText);
                             
-                            // Em React/JSX, usamos dangerouslySetInnerHTML para injetar HTML puro (necessário para a saída do Markdown)
+                            
                             llmResponseDiv.innerHTML = htmlContent as string; 
 
                             if (window.MathJax) {
-                                // Pede ao MathJax para renderizar as equações no novo conteúdo
+                                
                                 window.MathJax.typesetPromise([llmResponseDiv]); 
                             }
                         } else {
                             llmResponseDiv.innerHTML = 'Erro: Resposta inesperada da API. Tente novamente.';
                         }
                     }
-                    llmResponseDiv.classList.remove('hidden'); // Make it visible
+                    llmResponseDiv.classList.remove('hidden'); 
                 } catch (error) {
                     console.error('Erro ao chamar a API:', error);
                     llmResponseDiv.innerHTML = 'Ocorreu um erro ao gerar o exemplo. Verifique sua conexão ou tente novamente mais tarde.';
@@ -117,23 +114,18 @@ export default function Home() {
             });
         });
 
-        // Cleanup function para remover event listeners quando o componente é desmontado
+       
         return () => {
             buttons.forEach(button => {
-                // Remover o listener para evitar problemas em navegações futuras
-                // (Opcional, mas boa prática em React)
-                // button.removeEventListener('click', ...); 
+                
             });
         };
 
-    }, []); // O array vazio garante que o useEffect rode apenas uma vez
+    }, []); 
 
     return (
         <>
-            {/* Metadados (Opcional: O Next.js App Router usa um arquivo layout.tsx para isso) */}
-            {/* Você pode remover a tag <head> do seu HTML original. */}
-
-            {/* Configuração do MathJax e Outros Scripts Externos */}
+        
             <Script id="mathjax-config" strategy="beforeInteractive">
                 {`
                     window.MathJax = {
@@ -151,11 +143,11 @@ export default function Home() {
                 strategy="lazyOnload" 
                 src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" 
             />
-            {/* Usando o Script do Next.js para Tailwind e Marked.js (Se não tiver instalado via npm) */}
+           
             <Script src="https://cdn.tailwindcss.com" strategy="beforeInteractive" />
             <Script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" strategy="beforeInteractive" />
 
-            {/* O corpo da página, convertido para JSX */}
+            
             <main className="p-4 md:p-8">
                 <div className="max-w-5xl mx-auto">
                     <header className="text-center mb-10">
@@ -167,7 +159,7 @@ export default function Home() {
                         </p>
                     </header>
 
-                    {/* Conteúdo dos Teoremas (Convertendo class para className) */}
+                    {/* Conteúdo dos Teoremas */}
                     
                     {/* Teorema de Green */}
                     <section className="theorem-card border-2 border-primary-red bg-primary-red/10 rounded-2xl mb-12">
@@ -191,7 +183,6 @@ export default function Home() {
                         </details>
                         <div className="mt-6 text-center">
                             <button 
-        // Use a nova classe CSS personalizada
         className="generate-example-btn-style generate-example-btn" 
         data-theorem="green"
     >
@@ -225,7 +216,7 @@ export default function Home() {
                         </details>
                         <div className="mt-6 text-center">
                             <button 
-        // Use a nova classe CSS personalizada
+    
         className="generate-example-btn-style generate-example-btn" 
         data-theorem="stokes"
     >
@@ -259,7 +250,7 @@ export default function Home() {
                         </details>
                         <div className="mt-6 text-center">
                             <button 
-        // Use a nova classe CSS personalizada
+      
         className="generate-example-btn-style generate-example-btn" 
         data-theorem="gauss"
     >
@@ -277,7 +268,7 @@ export default function Home() {
                 </div>
             </main>
 
-            {/* Estilos CSS (Colocados no final do componente JSX usando styled-jsx (ou Next.js CSS Modules/Global Styles)) */}
+            {/* Estilos CSS */}
             <style jsx global>{`
                 body {
                     font-family: 'Inter', sans-serif;

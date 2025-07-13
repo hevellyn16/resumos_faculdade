@@ -1,6 +1,4 @@
-// app/api/generate/route.ts
 
-// 1. Defina a variável de ambiente segura (sem NEXT_PUBLIC_)
 const API_KEY = process.env.GEMINI_API_KEY; 
 
 export async function POST(req: Request) {
@@ -9,7 +7,7 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify({ error: 'API Key do Gemini não configurada no servidor.' }), { status: 500 });
   }
 
-  // Obtenha o conteúdo da requisição
+  
   const { prompt } = await req.json();
 
   const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
@@ -18,7 +16,7 @@ export async function POST(req: Request) {
     const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
     const payload = { contents: chatHistory };
 
-    // Faça a chamada segura à API Gemini
+   
     const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -33,7 +31,7 @@ export async function POST(req: Request) {
 
     const result = await response.json();
 
-    // Retorne a resposta (assumindo a estrutura de dados esperada da API Gemini)
+    
     return new Response(JSON.stringify(result.candidates[0].content.parts[0]), { status: 200 });
 
   } catch (error) {

@@ -1,14 +1,9 @@
-/* app/globals.css */
-
-/* 1. Importações do Tailwind CSS *
-
-/* 2. Suas variáveis CSS e estilos globais */
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-/* Removido: @theme inline { ... } (Este bloco não é a sintaxe padrão e pode causar erros) */
+
 
 @media (prefers-color-scheme: dark) {
   :root {
